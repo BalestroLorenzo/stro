@@ -56,6 +56,7 @@
     font-family:var(--font-body);
     position:relative;
     overflow-x:hidden;
+    touch-action: manipulation; /* Bloqueia o zoom por duplo toque nativo */
   }
 
   body::before{
@@ -309,7 +310,7 @@
   .link-card-item-bullet { width: 4px; height: 4px; border-radius: 50%; background: var(--silver-400); flex-shrink: 0; }
   .link-card-badge { font-size: 10px; font-family: var(--font-num); font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.05); color: var(--silver-400); flex-shrink: 0; }
 
-  /* INDICADOR VISUAL EXPLÍCITO DE CONTEÚDO ABAIXO */
+  /* BANNER EXPLÍCITO DE CONTEÚDO ABAIXO */
   .scroll-indicator-banner {
     display: flex;
     flex-direction: column;
@@ -506,16 +507,6 @@
 </button>
 
 <script>
-  // Bloqueia o zoom por duplo toque em dispositivos móveis
-let lastTouchEnd = 0;
-document.addEventListener('touchend', function (event) {
-  const now = (new Date()).getTime();
-  if (now - lastTouchEnd <= 300) {
-    event.preventDefault();
-  }
-  lastTouchEnd = now;
-}, false);
-
 (function(){
   "use strict";
 
@@ -726,7 +717,7 @@ document.addEventListener('touchend', function (event) {
   if (textarea) textarea.value = (tabs.find(t => t.id === activeId) || tabs[0]).content;
   renderTabs(); updateMathGutter();
 
-  // Renderizador de Links (Segunda Seção)
+  // Renderizador de Links
   const CATEGORIES = [
     { name: 'Tênis & Calçados', links: [ { label: 'WWTOP', url: 'https://wwfake100.x.yupoo.com/search/album' }, { label: 'Oldchen', url: 'https://qxdysw777.x.yupoo.com/albums/' }, { label: 'Yolo', url: 'https://yolo66.x.yupoo.com/albums/' }, { label: 'JMDY', url: 'https://tianjin-no1.x.yupoo.com' } ] },
     { name: 'Streetwear', links: [ { label: 'Rockets Reps', url: 'https://rockets-reps.x.yupoo.com/categories' }, { label: 'Tiger Official', url: 'https://tiger-official.x.yupoo.com/' }, { label: 'GOAT Official', url: 'https://goat-official.x.yupoo.com/' }, { label: 'Elephant Factory', url: 'https://elephant-factory.x.yupoo.com/categories/4564614' } ] },
@@ -735,7 +726,6 @@ document.addEventListener('touchend', function (event) {
   ];
   const linksContainer = document.getElementById('links-container');
   if (linksContainer){
-    CATEGORIES.javaScript = true; // dummy
     CATEGORIES.forEach(cat => {
       const card = document.createElement('section'); card.className = 'card';
       card.innerHTML = `<div class="card-head"><div class="card-titles"><span class="card-title">${cat.name.toUpperCase()}</span></div></div>`;
@@ -750,7 +740,7 @@ document.addEventListener('touchend', function (event) {
     });
   }
 
-  // Comportamento do botão flutuante e banner para alternar o scroll
+  // Navegação e scroll
   const navBtn = document.getElementById('scroll-nav-btn');
   const navIcon = document.getElementById('scroll-nav-icon');
   const banner = document.getElementById('scroll-to-links');
@@ -769,10 +759,10 @@ document.addEventListener('touchend', function (event) {
       atBottom = !atBottom;
       if (atBottom) {
         secLinks.scrollIntoView({ behavior: 'smooth' });
-        if(navIcon) navIcon.innerHTML = '<path d="M12 19V5M5 12l7-7 7 7"/>'; // Seta para cima
+        if(navIcon) navIcon.innerHTML = '<path d="M12 19V5M5 12l7-7 7 7"/>';
       } else {
         secDash.scrollIntoView({ behavior: 'smooth' });
-        if(navIcon) navIcon.innerHTML = '<path d="M12 5v14M19 12l-7 7-7-7"/>'; // Seta para baixo
+        if(navIcon) navIcon.innerHTML = '<path d="M12 5v14M19 12l-7 7-7-7"/>';
       }
     });
   }
